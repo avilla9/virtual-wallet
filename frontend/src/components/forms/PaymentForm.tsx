@@ -28,11 +28,16 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         setAmount('');
     };
 
-    const isButtonDisabled = !walletData.document || !walletData.phone;
+    const numericAmount = parseFloat(amount);
+    const isAmountValid = !isNaN(numericAmount) && numericAmount > 0;
+
+    const isButtonDisabled = !walletData.document || !walletData.phone || !isAmountValid || isLoading;
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-2xl font-extrabold text-gray-900 text-center">Realizar Pago</h2>
+            <h2 className="text-2xl font-extrabold text-gray-900 text-center">
+                <Send size={28} className="inline-block mr-2 text-indigo-600" /> Realizar Pago
+            </h2>
 
             <Input
                 label="Documento"
@@ -68,7 +73,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
                 type="submit"
                 loading={isLoading}
                 icon={<Send size={20} />}
-                disabled={isButtonDisabled || isLoading}
+                disabled={isButtonDisabled}
             >
                 {isLoading ? (
                     'Procesando Pago...'
@@ -78,9 +83,9 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
             </Button>
 
             {isLoading && (
-                <div className="text-center text-sm text-indigo-600 flex items-center justify-center mt-2">
+                <div className="text-center text-sm text-indigo-600 flex items-center justify-center mt-2 p-2 bg-indigo-50 rounded-lg">
                     <Loader2 size={16} className="animate-spin mr-2" />
-                    Transacción en curso (2 fases)...
+                    Transacción en curso (Inicio y Confirmación)...
                 </div>
             )}
         </form>

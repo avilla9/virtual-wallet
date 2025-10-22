@@ -35,7 +35,6 @@ export const BalanceSection: React.FC<BalanceSectionProps> = ({
                         <Loader2 size={48} className="animate-spin text-indigo-500 mx-auto" />
                     ) : (
                         <span className="flex items-end justify-center">
-                            {/* Muestra '---' si el saldo es undefined/null, sino lo formatea */}
                             {walletData.balance == null ? '---' : walletData.balance.toFixed(2)}
                             <span className="text-xl font-light ml-2 mb-1 text-gray-600">USD</span>
                         </span>

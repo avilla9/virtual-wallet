@@ -16,7 +16,6 @@ export const TabButton: React.FC<TabButtonProps> = ({
 }) => {
     const isActive = currentView === name;
 
-    // Mapeo para nombres amigables en mayúsculas
     const displayNameMap: Record<ViewType, string> = {
         'balance': 'Saldo',
         'load': 'Recargar',

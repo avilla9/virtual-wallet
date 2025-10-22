@@ -13,7 +13,6 @@ import { VIEWS } from './utils/constants';
 import { AlertTriangle } from 'lucide-react';
 
 const App: React.FC = () => {
-  // Inicializa la vista por defecto a Registrar
   const [view, setView] = useState<ViewType>(VIEWS.REGISTER);
 
   const {
@@ -29,21 +28,18 @@ const App: React.FC = () => {
 
   const { registerClient, loadWallet, initPayment, confirmPayment } = useApi();
 
-  // Al cambiar a la vista de Saldo, se fuerza una consulta de balance
   useEffect(() => {
-    if (view === VIEWS.BALANCE) {
+    if (view === VIEWS.BALANCE && !isBalanceLoading && walletData.document && walletData.phone) {
       handleCheckBalance();
     }
-  }, [view, handleCheckBalance]);
+  }, [view, walletData.document, walletData.phone, handleCheckBalance]);
 
   const handleRegister = async (clientData: ClientData) => {
-    // Validación para prevenir registro si ya hay una cuenta activa
-    if (walletData.document && walletData.phone) {
+    if (walletData.document || walletData.phone) {
       setStatus({
-        message: 'Ya tienes una cuenta activa en la sesión. El nuevo registro la sobrescribirá.',
+        message: 'Advertencia: El nuevo registro sobrescribirá la cuenta actual de la sesión.',
         type: 'warning'
       });
-      // Continúa con el registro, permitiendo la sobrescritura
     }
 
     setIsLoading(true);
@@ -54,12 +50,13 @@ const App: React.FC = () => {
 
       if (response.success) {
         setStatus({ message: '¡Registro exitoso! Cuenta creada y activa.', type: 'success' });
-        // El estado de la billetera ya fue actualizado con document/phone en RegisterForm/handleRegister
+
         updateWalletData({
           document: clientData.document,
           phone: clientData.phone,
           balance: 0.00
         });
+
         setView(VIEWS.BALANCE);
       } else {
         setStatus({ message: response.message || 'Error en el registro', type: 'error' });
@@ -87,7 +84,6 @@ const App: React.FC = () => {
 
       if (response.success) {
         setStatus({ message: `¡Recarga exitosa! Se han añadido ${amount.toFixed(2)} USD.`, type: 'success' });
-        // Forzar una consulta de saldo para obtener el balance actualizado de la API
         await handleCheckBalance();
       } else {
         setStatus({ message: response.message || 'Error en la recarga', type: 'error' });
@@ -107,7 +103,6 @@ const App: React.FC = () => {
     setStatus({ message: 'Iniciando proceso de pago (Fase 1/2)...', type: 'info' });
 
     try {
-      // Fase 1: Inicialización del Pago
       const initResponse = await initPayment({
         document: walletData.document,
         phone: walletData.phone,
@@ -118,23 +113,23 @@ const App: React.FC = () => {
         throw new Error(initResponse.message || 'Error al iniciar el pago.');
       }
 
-      const { sessionId, token } = initResponse.data;
+      const { sessionId, token } = (initResponse.data as any).data;
 
       if (!sessionId || !token) {
         throw new Error('El servicio no devolvió SessionId o Token para la confirmación.');
       }
 
+      console.log('Fase 1 Exitosa. Iniciando Fase 2 (Confirmación). SessionId:', sessionId, 'Token:', token);
+
       setStatus({ message: 'Pago iniciado. Confirmando transacción (Fase 2/2)...', type: 'info' });
 
-      // Fase 2: Confirmación del Pago
       const confirmResponse = await confirmPayment({ sessionId, token });
 
       if (!confirmResponse.success) {
-        throw new Error(confirmResponse.message || 'Error al confirmar el pago.');
+        throw new Error(confirmResponse.message || 'Error al confirmar el pago. Verifique el token y saldo.');
       }
 
       setStatus({ message: `¡Pago exitoso de ${amount.toFixed(2)} USD!`, type: 'success' });
-      // Forzar una consulta de saldo para obtener el balance actualizado de la API
       await handleCheckBalance();
     } catch (error) {
       setStatus({
@@ -146,16 +141,16 @@ const App: React.FC = () => {
     }
   };
 
-  // Renderiza el contenido principal basado en la vista actual
   const currentContent = useMemo(() => {
-    // Si no hay documento o teléfono activo, excepto en la vista de registro, muestra un aviso.
-    if (!walletData.document && view !== VIEWS.REGISTER) {
+    const isWalletActive = !!walletData.document && !!walletData.phone;
+
+    if (!isWalletActive && view !== VIEWS.REGISTER) {
       return (
         <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 shadow-inner">
           <AlertTriangle size={48} className="text-red-500 mx-auto mb-4" />
           <h3 className="text-xl font-bold text-gray-800">Cuenta No Activa</h3>
           <p className="text-gray-600 mt-2">
-            Por favor, <span className="font-semibold text-indigo-600">registra una cuenta</span> para acceder a las funciones de recarga, pago o saldo.
+            Por favor, <span className="font-semibold text-indigo-600">registra o ingresa los datos de una cuenta</span> para acceder a las demás funciones.
           </p>
           <div className="mt-6">
             <button

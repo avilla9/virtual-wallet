@@ -24,7 +24,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         phone: walletData.phone || ''
     });
 
-    // Sincronizar el estado del formulario con el estado de la billetera al cargar el componente
     useEffect(() => {
         setFormData(prev => ({
             ...prev,
@@ -40,7 +39,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Antes de registrar, actualiza los datos de la billetera en el estado global
         onUpdateWalletData({
             document: formData.document,
             phone: formData.phone
@@ -53,8 +51,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-6">
             <h2 className="text-2xl font-extrabold text-gray-900 text-center">Registro de Nueva Cuenta</h2>
 
-            {/* Muestra un mensaje si ya hay una cuenta activa */}
-            {walletData.document && (
+            {(walletData.document || walletData.phone) && (
                 <div className="p-3 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 text-sm text-center">
                     Ya existe una cuenta en esta sesión. El registro sobrescribirá la cuenta activa.
                 </div>

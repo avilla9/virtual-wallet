@@ -22,7 +22,6 @@ export const LoadForm: React.FC<LoadFormProps> = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const numericAmount = parseFloat(amount);
-        // Validación básica
         if (isNaN(numericAmount) || numericAmount <= 0) return;
 
         await onLoad(numericAmount);
