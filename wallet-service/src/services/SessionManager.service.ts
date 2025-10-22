@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { generateStandardResponse } from '../common/response-util.ts';
-import type { ApiResponse } from '../common/types.ts';
+import { generateStandardResponse } from '../common/response-util';
+import type { ApiResponse } from '../common/types';
 
 interface PaymentSession {
     walletId: number;

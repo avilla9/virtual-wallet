@@ -1,14 +1,14 @@
-import { DataRepository } from "../repositories/Data.repository.ts";
-import { RegistrationSchema } from "../schemas/RegistrationPayload.schema.ts";
+import { DataRepository } from "../repositories/Data.repository";
+import { RegistrationSchema } from "../schemas/RegistrationPayload.schema";
 import type {
     RegistrationPayload,
     UserWalletData,
     IdentifyPayload,
     ResponseStatus,
     ApiResponse
-} from "../common/types.ts";
+} from "../common/types";
 import { ZodError } from "zod";
-import { generateStandardResponse } from "../common/response-util.ts";
+import { generateStandardResponse } from "../common/response-util";
 
 export class DataService {
     private repository: DataRepository;

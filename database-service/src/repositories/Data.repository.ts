@@ -1,12 +1,12 @@
 import { Repository, DataSource } from 'typeorm';
-import { User } from '../entities/User.entity.ts';
-import { Wallet } from '../entities/Wallet.entity.ts';
-import { generateStandardResponse } from '../common/response-util.ts';
+import { User } from '../entities/User.entity';
+import { Wallet } from '../entities/Wallet.entity';
+import { generateStandardResponse } from '../common/response-util';
 import type {
     RegistrationPayload,
     UserWalletData,
     IdentifyPayload,
-} from '../common/types.ts';
+} from '../common/types';
 
 export class DataRepository {
     private userRepository: Repository<User>;

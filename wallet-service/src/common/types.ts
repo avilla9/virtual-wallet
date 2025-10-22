@@ -11,19 +11,19 @@ export interface RegistrationPayload {
     document: string;
     names: string;
     email: string;
-    cellphone: string;
+    phone: string;
 }
 
 export interface IdentifyPayload {
     document: string;
-    cellphone: string;
+    phone: string;
 }
 
 export interface UserWalletData {
     document: string;
     names: string;
     email: string;
-    cellphone: string;
+    phone: string;
     walletId: number;
     balance: number;
 }

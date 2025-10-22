@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { IdentifyPayload, RegistrationPayload, UserWalletData, ApiResponse } from '../common/types.ts';
+import type { IdentifyPayload, RegistrationPayload, UserWalletData, ApiResponse } from '../common/types';
 
 const REST1_URL = process.env.REST1_URL;
 const API_PREFIX = '/api/data';

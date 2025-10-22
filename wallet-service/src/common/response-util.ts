@@ -1,4 +1,4 @@
-import type { ApiResponse, ResponseStatus } from './types.ts';
+import type { ApiResponse, ResponseStatus } from './types';
 
 export function generateStandardResponse<T>(
     status: ResponseStatus,

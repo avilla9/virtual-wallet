@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn } from "typeorm";
-import { Wallet } from "./Wallet.entity.ts";
+import { Wallet } from "./Wallet.entity";
 
 @Entity()
 export class User {

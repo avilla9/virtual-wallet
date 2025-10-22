@@ -1,26 +1,19 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "lib": [],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2024",
+    "lib": [
+      "es2024"
+    ],
     "types": [
       "node"
     ],
+    "baseUrl": "./src",
     "rootDir": "./src",
     "outDir": "./dist",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "moduleDetection": "force",
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
     "skipLibCheck": true,
-    "emitDeclarationOnly": true,
-    "allowImportingTsExtensions": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   },

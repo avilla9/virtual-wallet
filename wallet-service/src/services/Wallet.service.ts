@@ -1,12 +1,12 @@
-import { DataService } from '../api/DataService.api.ts';
-import { SessionManager } from './SessionManager.service.ts';
+import { DataService } from '../api/DataService.api';
+import { SessionManager } from './SessionManager.service';
 import type {
     ApiResponse,
     IdentifyPayload,
     RegistrationPayload,
     UserWalletData
-} from '../common/types.ts';
-import { generateStandardResponse } from '../common/response-util.ts';
+} from '../common/types';
+import { generateStandardResponse } from '../common/response-util';
 
 export class WalletService {
     private dataApi: DataService;
@@ -18,7 +18,7 @@ export class WalletService {
     }
 
     public async registerClient(payload: RegistrationPayload): Promise<ApiResponse<UserWalletData>> {
-        if (!payload.document || !payload.cellphone) {
+        if (!payload.document || !payload.phone) {
             return generateStandardResponse('failure', '400_BAD_REQUEST', 'Documento y celular son requeridos para el registro.');
         }
 

@@ -1,11 +1,11 @@
 import 'reflect-metadata';
-import express from 'express';
-import { AppDataSource } from './config/data-source.ts';
-import { DataRepository } from './repositories/Data.repository.ts';
-import { DataService } from './services/Data.service.ts';
-import { generateStandardResponse } from './common/response-util.ts';
+import * as express from 'express';
+import { AppDataSource } from './config/data-source';
+import { DataRepository } from './repositories/Data.repository';
+import { DataService } from './services/Data.service';
+import { generateStandardResponse } from './common/response-util';
 import type { Request, Response } from 'express';
-import type { IdentifyPayload, RegistrationPayload } from './common/types.ts';
+import type { IdentifyPayload, RegistrationPayload } from './common/types';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001');

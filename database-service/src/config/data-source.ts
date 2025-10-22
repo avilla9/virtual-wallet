@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "../entities/User.entity.ts";
-import { Wallet } from "../entities/Wallet.entity.ts";
+import { User } from "../entities/User.entity";
+import { Wallet } from "../entities/Wallet.entity";
 
 const DB_HOST = process.env.DB_HOST;
 const DB_PORT = parseInt(process.env.DB_PORT || "3306");
