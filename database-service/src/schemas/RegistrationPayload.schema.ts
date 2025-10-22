@@ -14,5 +14,5 @@ export const RegistrationSchema = z.object({
 
     phone: z.string()
         .nonempty("El teléfono es obligatorio.")
-        .regex(/^\d{7,15}$/, "El teléfono debe ser un número de 7 a 15 dígitos."), // Basic regex for phone number (only digits)
+        .regex(/^\d{7,15}$/, "El teléfono debe ser un número de 7 a 15 dígitos."), 
 });

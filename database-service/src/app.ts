@@ -61,7 +61,7 @@ AppDataSource.initialize()
 
         app.patch(`${API_PREFIX}/wallet/balance`, async (req: Request, res: Response) => {
             try {
-                const { walletId, amount } = req.body; // amount es positivo para recarga, negativo para débito
+                const { walletId, amount } = req.body;
 
                 if (typeof walletId !== 'number' || typeof amount !== 'number') {
                     const errorResponse = generateStandardResponse('failure', '400_BAD_REQUEST', 'ID de billetera o monto inválido.');

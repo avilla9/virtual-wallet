@@ -1,3 +1,4 @@
+import * as cors from 'cors';
 import * as express from 'express';
 import { DataService } from './api/DataService.api';
 import { SessionManager } from './services/SessionManager.service';
@@ -10,13 +11,13 @@ const PUBLIC_PORT = parseInt(process.env.PORT || '3000');
 
 app.use(express.json());
 
-// Allow CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+const corsOptions = {
+    origin: 'http://localhost:8080', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const dataApi = new DataService();
 const sessionManager = new SessionManager();
