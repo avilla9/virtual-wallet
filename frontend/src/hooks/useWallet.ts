@@ -42,12 +42,20 @@ export const useWallet = () => {
             });
 
             if (response.success) {
-                const newBalance = response.data?.balance || 0;
-                updateWalletData({ balance: parseFloat(newBalance.toFixed(2)) });
-                setStatus({
-                    message: `Saldo actualizado: ${newBalance.toFixed(2)} USD.`,
-                    type: 'info'
-                });
+                const nestedData = (response as any).data?.data;
+                const rawBalance = nestedData?.balance;
+                const newBalance = parseFloat(String(rawBalance) || '0');
+
+                if (isNaN(newBalance)) {
+                    updateWalletData({ balance: undefined });
+                    setStatus({ message: 'Error: El saldo recibido no es un número válido.', type: 'error' });
+                } else {
+                    updateWalletData({ balance: newBalance });
+                    setStatus({
+                        message: `Saldo actualizado: ${newBalance.toFixed(2)} USD.`,
+                        type: 'success'
+                    });
+                }
             } else {
                 updateWalletData({ balance: undefined });
                 setStatus({ message: response.message || 'Error al consultar saldo', type: 'error' });
@@ -61,7 +69,7 @@ export const useWallet = () => {
         } finally {
             setIsBalanceLoading(false);
         }
-    }, [checkBalance, updateWalletData]);
+    }, [checkBalance, updateWalletData, setStatus, setIsBalanceLoading]);
 
     return {
         walletData,

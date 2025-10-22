@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { apiService } from '../services/apiService';
+import { apiService } from '../services/ApiService';
 import type { ApiResponse } from '../types';
 
 export const useApi = () => {

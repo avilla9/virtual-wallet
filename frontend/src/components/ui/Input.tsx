@@ -2,7 +2,7 @@ import React from 'react';
 
 interface InputProps {
     label: string;
-    name?: string;
+    name: string;
     type?: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -24,19 +24,20 @@ export const Input: React.FC<InputProps> = ({
     placeholder
 }) => {
     return (
-        <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="space-y-1">
+            <label htmlFor={name} className="block text-sm font-medium text-gray-700">
                 {label}
             </label>
             <input
-                type={type}
+                id={name}
                 name={name}
+                type={type}
                 value={value}
                 onChange={onChange}
                 required={required}
                 min={min}
                 step={step}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-gray-800"
                 placeholder={placeholder || `Introduce ${label.toLowerCase()}`}
             />
         </div>

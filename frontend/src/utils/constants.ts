@@ -4,11 +4,5 @@ export const VIEWS = {
     BALANCE: 'balance',
     LOAD: 'load',
     PAY: 'pay',
-    REGISTER: 'register'
-} as const;
-
-export const STATUS_TYPES = {
-    SUCCESS: 'success',
-    ERROR: 'error',
-    INFO: 'info'
+    REGISTER: 'register',
 } as const;
