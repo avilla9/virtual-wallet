@@ -19,6 +19,10 @@
     "declaration": true,
     "declarationMap": true,
     "skipLibCheck": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   },
   "include": [
     "src/**/*"
