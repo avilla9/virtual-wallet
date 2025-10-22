@@ -47,5 +47,16 @@ services:
     depends_on:
       - wallet_data_service
 
+  wallet_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: wallet_frontend
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - wallet_logic_service
+
 volumes:
   db_data: {}
