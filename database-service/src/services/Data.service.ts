@@ -1,4 +1,4 @@
-import { DataRepository } from "../repositories/DataRepository.ts";
+import { DataRepository } from "../repositories/Data.repository.ts";
 import { RegistrationSchema } from "../schemas/RegistrationPayload.schema.ts";
 import type {
     RegistrationPayload,
