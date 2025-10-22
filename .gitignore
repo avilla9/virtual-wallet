@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+**/build
+**/lib
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.vscode/
+.idea/
+.DS_Store
+db_data/
+.dockerignore
