@@ -28,10 +28,10 @@ const App: React.FC = () => {
   const { registerClient, loadWallet, initPayment, confirmPayment } = useApi();
 
   useEffect(() => {
-    if (view === VIEWS.BALANCE && !isBalanceLoading) {
+    if (view === VIEWS.BALANCE) {
       handleCheckBalance();
     }
-  }, [view, isBalanceLoading, handleCheckBalance]);
+  }, [view, handleCheckBalance]);
 
   const handleRegister = async (clientData: ClientData) => {
     setIsLoading(true);

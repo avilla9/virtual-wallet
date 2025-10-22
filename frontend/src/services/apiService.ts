@@ -15,13 +15,16 @@ class ApiService {
     ): Promise<ApiResponse<T>> {
         try {
             const url = `${this.baseURL}${endpoint}`;
+            const finalBody = options.body && typeof options.body !== 'string'
+                ? JSON.stringify(options.body)
+                : options.body;
             const response = await fetch(url, {
                 ...options,
                 headers: {
                     'Content-Type': 'application/json',
                     ...options.headers,
                 },
-                body: options.body ? JSON.stringify(options.body) : null,
+                body: finalBody as BodyInit,
             });
 
             const data = await response.json();
@@ -58,7 +61,7 @@ class ApiService {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: jsonBody,
+            body: jsonBody as any,
         };
         return this.request<TResponse>(url, options);
     }

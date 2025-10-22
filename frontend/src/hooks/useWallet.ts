@@ -61,7 +61,7 @@ export const useWallet = () => {
         } finally {
             setIsBalanceLoading(false);
         }
-    }, [checkBalance, updateWalletData, setStatus, setIsBalanceLoading]);
+    }, [checkBalance, updateWalletData]);
 
     return {
         walletData,
