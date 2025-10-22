@@ -1,0 +1,50 @@
+env_file:
+  - .env
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wallet_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+  wallet_data_service:
+    build:
+      context: ./database-service
+      dockerfile: Dockerfile
+    container_name: wallet_data_service
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      PORT: ${DATA_SERVICE_PORT}
+    ports:
+      - "${DATA_SERVICE_PORT}:${DATA_SERVICE_PORT}"
+    depends_on:
+      - mysql
+
+  wallet_logic_service:
+    build:
+      context: ./wallet-service
+      dockerfile: Dockerfile
+    container_name: wallet_logic_service
+    restart: always
+    environment:
+      REST1_URL: http://wallet_data_service:${DATA_SERVICE_PORT} 
+      PORT: ${LOGIC_SERVICE_PORT}
+    ports:
+      - "${LOGIC_SERVICE_PORT}:${LOGIC_SERVICE_PORT}"
+    depends_on:
+      - wallet_data_service
+
+volumes:
+  db_data: {}
