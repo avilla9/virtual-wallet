@@ -119,8 +119,6 @@ const App: React.FC = () => {
         throw new Error('El servicio no devolvió SessionId o Token para la confirmación.');
       }
 
-      console.log('Fase 1 Exitosa. Iniciando Fase 2 (Confirmación). SessionId:', sessionId, 'Token:', token);
-
       setStatus({ message: 'Pago iniciado. Confirmando transacción (Fase 2/2)...', type: 'info' });
 
       const confirmResponse = await confirmPayment({ sessionId, token });
@@ -144,20 +142,26 @@ const App: React.FC = () => {
   const currentContent = useMemo(() => {
     const isWalletActive = !!walletData.document && !!walletData.phone;
 
-    if (!isWalletActive && view !== VIEWS.REGISTER) {
+    if (!isWalletActive && (view === VIEWS.LOAD || view === VIEWS.PAY)) {
       return (
-        <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 shadow-inner">
+        <div className="text-center p-8 bg-gray-800 rounded-2xl border border-dashed border-red-700 shadow-xl">
           <AlertTriangle size={48} className="text-red-500 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-gray-800">Cuenta No Activa</h3>
-          <p className="text-gray-600 mt-2">
-            Por favor, <span className="font-semibold text-indigo-600">registra o ingresa los datos de una cuenta</span> para acceder a las demás funciones.
+          <h3 className="text-2xl font-extrabold text-white">Sesión Requerida</h3>
+          <p className="text-gray-400 mt-3 text-base">
+            Debes <span className="font-bold text-green-400">registrar una cuenta</span> o <span className="font-bold text-green-400">consultar el saldo</span> para cargar y pagar.
           </p>
-          <div className="mt-6">
+          <div className="mt-8 flex justify-center space-x-4">
             <button
               onClick={() => setView(VIEWS.REGISTER)}
-              className="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:bg-indigo-700 transition"
+              className="px-6 py-3 bg-indigo-600 text-white font-semibold text-lg rounded-xl shadow-lg hover:bg-indigo-700 transition transform hover:scale-[1.02] active:scale-95"
             >
-              Ir a Registrar
+              Registrar
+            </button>
+            <button
+              onClick={() => setView(VIEWS.BALANCE)}
+              className="px-6 py-3 bg-gray-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:bg-gray-600 transition transform hover:scale-[1.02] active:scale-95"
+            >
+              Consultar Saldo
             </button>
           </div>
         </div>
@@ -206,11 +210,11 @@ const App: React.FC = () => {
   }, [view, walletData, isLoading, isBalanceLoading, handleCheckBalance, updateWalletData, handleRegister, handleLoad, handlePayment, setView]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-8 flex items-center justify-center font-['Inter']">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-gray-900 p-4 sm:p-8 flex items-center justify-center font-['Inter']">
+      <div className="w-full max-w-md bg-gray-800 rounded-3xl shadow-2xl border border-gray-700 overflow-hidden transform transition-all duration-300">
         <Header />
 
-        <div className="p-6">
+        <div className="p-6 sm:p-8">
 
           <StatusNotification
             notification={status}
@@ -222,20 +226,25 @@ const App: React.FC = () => {
             onViewChange={setView}
           />
 
-          <div className="p-0 border-none rounded-xl bg-transparent">
+          <div className="p-0">
             {currentContent}
           </div>
 
-          <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 shadow-inner">
-            <p className="font-semibold mb-1 text-indigo-700">Cuenta Activa en Sesión:</p>
-            <p className="flex justify-between flex-wrap">
+          <div className="mt-8 p-4 bg-gray-900 border border-gray-700 rounded-xl text-sm text-gray-400 shadow-inner">
+            <p className="font-bold mb-2 text-indigo-400 border-b border-gray-700 pb-1 flex items-center">
+              <span className="inline-block w-2 h-2 mr-2 bg-green-500 rounded-full"></span>
+              Datos de Sesión
+            </p>
+            <div className="flex justify-between flex-wrap gap-y-2">
               <span className="mr-4">
-                Doc: <span className="font-mono bg-white px-2 py-1 rounded-md border border-gray-100 text-gray-600">{walletData.document || 'N/A'}</span>
+                <span className="text-gray-500 font-medium">Documento:</span>
+                <span className="font-mono ml-2 px-3 py-1 bg-gray-700 border border-gray-600 rounded-lg text-white shadow-sm">{walletData.document || 'N/A'}</span>
               </span>
               <span>
-                Tel: <span className="font-mono bg-white px-2 py-1 rounded-md border border-gray-100 text-gray-600">{walletData.phone || 'N/A'}</span>
+                <span className="text-gray-500 font-medium">Teléfono:</span>
+                <span className="font-mono ml-2 px-3 py-1 bg-gray-700 border border-gray-600 rounded-lg text-white shadow-sm">{walletData.phone || 'N/A'}</span>
               </span>
-            </p>
+            </div>
           </div>
         </div>
       </div>

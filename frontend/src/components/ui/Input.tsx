@@ -25,7 +25,7 @@ export const Input: React.FC<InputProps> = ({
 }) => {
     return (
         <div className="space-y-1">
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+            <label htmlFor={name} className="block text-sm font-medium">
                 {label}
             </label>
             <input
@@ -37,7 +37,7 @@ export const Input: React.FC<InputProps> = ({
                 required={required}
                 min={min}
                 step={step}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-gray-800"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out"
                 placeholder={placeholder || `Introduce ${label.toLowerCase()}`}
             />
         </div>

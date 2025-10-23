@@ -28,8 +28,8 @@ export const TabButton: React.FC<TabButtonProps> = ({
         <button
             onClick={() => onClick(name)}
             className={`flex-1 flex flex-col items-center p-3 text-sm font-medium rounded-xl transition-all duration-200 ease-in-out ${isActive
-                ? 'bg-indigo-600 text-white shadow-xl ring-2 ring-indigo-300 transform scale-[1.05]'
-                : 'text-gray-600 hover:bg-gray-100 transform hover:scale-[1.02]'
+                ? 'text-white shadow-xl ring-2'
+                : 'text-gray-600 hover:bg-gray-100 transform'
                 }`}
             aria-current={isActive ? 'page' : undefined}
             aria-label={displayName}

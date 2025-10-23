@@ -34,60 +34,64 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
     const isButtonDisabled = !walletData.document || !walletData.phone || !isAmountValid || isLoading;
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-2xl font-extrabold text-gray-900 text-center">
+        <form onSubmit={handleSubmit} className="p-6 rounded-2xl shadow-lg border border-gray-100">
+            <h2 className="text-2xl font-extrabold text-center mb-6 flex items-center justify-center">
                 <Send size={28} className="inline-block mr-2 text-indigo-600" /> Realizar Pago
             </h2>
 
-            <Input
-                label="Documento"
-                name="document"
-                type="text"
-                value={walletData.document}
-                onChange={(e) => onUpdateWalletData({ document: e.target.value })}
-                required
-                placeholder="Ej: 1088012345"
-            />
-            <Input
-                label="Teléfono"
-                name="phone"
-                type="text"
-                value={walletData.phone}
-                onChange={(e) => onUpdateWalletData({ phone: e.target.value })}
-                required
-                placeholder="Ej: 3001234567"
-            />
-            <Input
-                label="Monto a Pagar (USD)"
-                name="amount"
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-                min="0.01"
-                step="0.01"
-                placeholder="Monto del pago"
-            />
+            <div className="space-y-4">
+                <Input
+                    label="Documento"
+                    name="document"
+                    type="text"
+                    value={walletData.document}
+                    onChange={(e) => onUpdateWalletData({ document: e.target.value })}
+                    required
+                    placeholder="Ej: 1088012345"
+                />
+                <Input
+                    label="Teléfono"
+                    name="phone"
+                    type="text"
+                    value={walletData.phone}
+                    onChange={(e) => onUpdateWalletData({ phone: e.target.value })}
+                    required
+                    placeholder="Ej: 3001234567"
+                />
+                <Input
+                    label="Monto a Pagar (USD)"
+                    name="amount"
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Monto del pago"
+                />
+            </div>
 
-            <Button
-                type="submit"
-                loading={isLoading}
-                icon={<Send size={20} />}
-                disabled={isButtonDisabled}
-            >
-                {isLoading ? (
-                    'Procesando Pago...'
-                ) : (
-                    'Realizar Pago'
+            <div className="pt-6">
+                <Button
+                    type="submit"
+                    loading={isLoading}
+                    icon={<Send size={20} />}
+                    disabled={isButtonDisabled}
+                >
+                    {isLoading ? (
+                        'Procesando Pago...'
+                    ) : (
+                        'Realizar Pago'
+                    )}
+                </Button>
+
+                {isLoading && (
+                    <div className="text-center text-sm text-indigo-700 flex items-center justify-center mt-4 p-3 bg-indigo-100 rounded-xl border border-indigo-300 shadow-inner">
+                        <Loader2 size={18} className="animate-spin mr-2" />
+                        Transacción en curso (Inicio y Confirmación)...
+                    </div>
                 )}
-            </Button>
-
-            {isLoading && (
-                <div className="text-center text-sm text-indigo-600 flex items-center justify-center mt-2 p-2 bg-indigo-50 rounded-lg">
-                    <Loader2 size={16} className="animate-spin mr-2" />
-                    Transacción en curso (Inicio y Confirmación)...
-                </div>
-            )}
+            </div>
         </form>
     );
 };

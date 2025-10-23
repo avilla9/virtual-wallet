@@ -48,59 +48,66 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-2xl font-extrabold text-gray-900 text-center">Registro de Nueva Cuenta</h2>
+        <form onSubmit={handleSubmit} className="p-6 rounded-2xl shadow-lg border border-gray-100">
+            <h2 className="text-2xl font-extrabold text-center mb-6 flex items-center justify-center">
+                <UserPlus size={28} className="mr-2 text-indigo-600" /> Registro de Cuenta
+            </h2>
 
             {(walletData.document || walletData.phone) && (
-                <div className="p-3 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-200 text-sm text-center">
-                    Ya existe una cuenta en esta sesión. El registro sobrescribirá la cuenta activa.
+                <div className="p-4 mb-6 bg-yellow-50 text-yellow-800 rounded-xl border border-yellow-300 text-sm text-center font-medium shadow-sm">
+                    Ya existe una cuenta en esta sesión.
                 </div>
             )}
 
-            <Input
-                name="document"
-                label="Documento"
-                type="text"
-                value={formData.document}
-                onChange={handleChange}
-                required
-                placeholder="Ej: 1088012345"
-            />
-            <Input
-                name="names"
-                label="Nombre Completo"
-                type="text"
-                value={formData.names}
-                onChange={handleChange}
-                required
-                placeholder="Ej: Juan Pérez"
-            />
-            <Input
-                name="email"
-                label="Email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="ejemplo@correo.com"
-            />
-            <Input
-                name="phone"
-                label="Teléfono"
-                type="text"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                placeholder="Ej: 3001234567"
-            />
-            <Button
-                type="submit"
-                loading={isLoading}
-                icon={<UserPlus size={20} />}
-                disabled={isLoading}
-            >
-                Registrar Cuenta
-            </Button>
+            <div className="space-y-4">
+                <Input
+                    name="document"
+                    label="Documento"
+                    type="text"
+                    value={formData.document}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ej: 1088012345"
+                />
+                <Input
+                    name="names"
+                    label="Nombre Completo"
+                    type="text"
+                    value={formData.names}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ej: Juan Pérez"
+                />
+                <Input
+                    name="email"
+                    label="Email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="ejemplo@correo.com"
+                />
+                <Input
+                    name="phone"
+                    label="Teléfono"
+                    type="text"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ej: 3001234567"
+                />
+            </div>
+
+            <div className="pt-6">
+                <Button
+                    type="submit"
+                    loading={isLoading}
+                    icon={<UserPlus size={20} />}
+                    disabled={isLoading}
+                >
+                    Registrar Cuenta
+                </Button>
+            </div>
         </form>
     );
 };
