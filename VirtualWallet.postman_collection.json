@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "a0ae3ece-0147-402b-bee9-15b6cdfbf764",
+		"name": "Wallet Microservices API (REST-1 y REST-2)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25656325",
+		"_collection_link": "https://red-satellite-565796.postman.co/workspace/Team-Workspace~57aef50a-178b-42b9-8e4d-8aa1835fb5fd/collection/25656325-a0ae3ece-0147-402b-bee9-15b6cdfbf764?action=share&source=collection_link&creator=25656325"
+	},
+	"item": [
+		{
+			"name": "Servicio Lógico Público (REST-2 | Puerto: 3000)",
+			"item": [
+				{
+					"name": "REGISTRAR: Cliente Nuevo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001000\",\n    \"names\": \"Juan Pérez\",\n    \"email\": \"juan.perez@example.com\",\n    \"phone\": \"3001234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/client/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"client",
+								"register"
+							]
+						},
+						"description": "Endpoint: POST /api/v1/client/register (REST-2)\nFunción: Registra un nuevo usuario y crea su billetera inicial con saldo 0. Delega la persistencia a REST-1."
+					},
+					"response": []
+				},
+				{
+					"name": "RECARGAR: Cargar Dinero",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001000\",\n    \"phone\": \"3001234567\",\n    \"amount\": 50.00\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/wallet/load",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"load"
+							]
+						},
+						"description": "Endpoint: POST /api/v1/wallet/load (REST-2)\nFunción: Recarga el saldo. El monto se suma al balance, usando la lógica de identificación y actualización de REST-1.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "CONSULTAR: Saldo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001000\",\n    \"phone\": \"3001234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/wallet/balance",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"balance"
+							]
+						},
+						"description": "Endpoint: POST /api/v1/wallet/balance (REST-2)\nFunción: Consulta el saldo actual de la billetera. Pide los datos a REST-1."
+					},
+					"response": []
+				},
+				{
+					"name": "PAGO FASE 1: Iniciar Pago (Obtener SessionId y Token)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001000\",\n    \"phone\": \"3001234567\",\n    \"amount\": 15.50\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/payment/init",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"init"
+							]
+						},
+						"description": "Endpoint: POST /api/v1/payment/init (REST-2)\nFunción: Verifica saldo suficiente y crea una sesión temporal (en memoria de REST-2). \n\n¡ATENCIÓN! Copia el 'sessionId' y el 'token' que se imprimen en la CONSOLA del servicio REST-2 para usarlos en el paso 2."
+					},
+					"response": []
+				},
+				{
+					"name": "PAGO FASE 2: Confirmar Pago (Aplicar Débito)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sessionId\": \"<PEGAR_AQUI_EL_SESSION_ID>\",\n    \"token\": \"<PEGAR_AQUI_EL_TOKEN>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/payment/confirm",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"confirm"
+							]
+						},
+						"description": "Endpoint: POST /api/v1/payment/confirm (REST-2)\nFunción: Valida el token y realiza el débito del saldo, llamando al endpoint de actualización de saldo de REST-1 con un monto negativo.\n\nReemplaza los valores de `sessionId` y `token`."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints públicos consumidos por el cliente web. Maneja la lógica de negocio de alto nivel y el flujo de pago en dos fases."
+		},
+		{
+			"name": "Servicio Interno de Datos (REST-1 | Puerto: 3001)",
+			"item": [
+				{
+					"name": "INTERNO: /register (Crear Usuario y Billetera)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001001\",\n    \"names\": \"María D\",\n    \"email\": \"maria.d@example.com\",\n    \"phone\": \"3109876543\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/data/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"data",
+								"register"
+							]
+						},
+						"description": "Endpoint: POST /api/data/register (REST-1)\nFunción: Equivalente al registro de REST-2, pero directo al servicio de datos. Útil para verificar la conexión inicial a MySQL."
+					},
+					"response": []
+				},
+				{
+					"name": "INTERNO: /wallet/find (Buscar Billetera y Saldo)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"document\": \"10001000\",\n    \"phone\": \"3001234567\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/data/wallet/find",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"data",
+								"wallet",
+								"find"
+							]
+						},
+						"description": "Endpoint: POST /api/data/wallet/find (REST-1)\nFunción: Retorna los datos del usuario y su saldo. Usado internamente por REST-2 para todas las consultas y validaciones."
+					},
+					"response": []
+				},
+				{
+					"name": "INTERNO: /wallet/balance (Actualizar Saldo CRUD)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"walletId\": 1,\n    \"amount\": 10.00\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/data/wallet/balance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"data",
+								"wallet",
+								"balance"
+							]
+						},
+						"description": "Endpoint: PATCH /api/data/wallet/balance (REST-1)\nFunción: Endpoint CRUD para modificar el saldo. Toma 'walletId' y un 'amount' (positivo para sumar, negativo para restar). REST-2 lo consume en las operaciones de recarga y confirmación de pago."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints privados de acceso directo a la BD. Estos NO deben ser consumidos por el cliente final."
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
