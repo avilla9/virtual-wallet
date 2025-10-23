@@ -43,6 +43,9 @@ El archivo `.env.example` en la raíz del proyecto contiene las variables de ent
 2.  **Verificación de Variables:**
     El archivo `.env` en la raíz es crucial para la ejecución local si no se usa Docker, pero en este proyecto, todas las variables de los servicios están ya inyectadas y configuradas dentro de `docker-compose.yml` (e.g., `DB_HOST: mysql` y `REST1_URL: http://rest1_data_service:3001`), lo que garantiza que la comunicación interna de Docker sea correcta.
 
+3.  **Entorno de frontend:**
+    Existe un archivo `.env.example` en la raíz de la carpeta `frontend` en la cual debe realizarse un procedimeinto similar al anterior.
+
 ### 2\. Despliegue con un Solo Comando
 
 Ejecuta el siguiente comando en la raíz del proyecto (donde se encuentra `docker-compose.yml`):
